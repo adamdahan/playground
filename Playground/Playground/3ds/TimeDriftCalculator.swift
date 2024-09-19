@@ -52,22 +52,22 @@ class TimeDriftCalculator {
     }
 }
 
-// Usage
-let calculator = TimeDriftCalculator()
-
-// Step 1: Cache the server time (this would be done when receiving the API response)
-let serverTime = "2024-07-04T13:35:01.362-04:00" // Example server time
-calculator.cacheServerTime(serverTime)
-
-// Step 2: Calculate the drift
-if let drift = calculator.calculateDrift() {
-    print("Drift between local and server time: \(drift) seconds")
-}
-
-// Step 3: Check if drift is within the expiry time
-let expiryTime = ISO8601DateFormatter().date(from: "2024-07-04T14:00:00.000-04:00")! // Example expiry time
-if calculator.isDriftWithinExpiry(expiryTime: expiryTime) {
-    print("Drift is within the expiry time")
-} else {
-    print("Drift exceeds the expiry time")
-}
+//// Usage
+//let calculator = TimeDriftCalculator()
+//
+//// Step 1: Cache the server time (this would be done when receiving the API response)
+//let serverTime = "2024-07-04T13:35:01.362-04:00" // Example server time
+//calculator.cacheServerTime(serverTime)
+//
+//// Step 2: Calculate the drift
+//if let drift = calculator.calculateDrift() {
+//    print("Drift between local and server time: \(drift) seconds")
+//}
+//
+//// Step 3: Check if drift is within the expiry time
+//let expiryTime = ISO8601DateFormatter().date(from: "2024-07-04T14:00:00.000-04:00")! // Example expiry time
+//if calculator.isDriftWithinExpiry(expiryTime: expiryTime) {
+//    print("Drift is within the expiry time")
+//} else {
+//    print("Drift exceeds the expiry time")
+//}

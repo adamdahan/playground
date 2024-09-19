@@ -12,6 +12,7 @@
 		9A58F8E22C7FD89D00392C81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A58F8E12C7FD89D00392C81 /* Assets.xcassets */; };
 		9A58F8E52C7FD89D00392C81 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A58F8E42C7FD89D00392C81 /* Preview Assets.xcassets */; };
 		9A58F8ED2C7FD8D600392C81 /* TimeDriftCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A58F8EC2C7FD8D600392C81 /* TimeDriftCalculator.swift */; };
+		9A58F8EF2C82232C00392C81 /* demo-alert-fade-in.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A58F8EE2C82232C00392C81 /* demo-alert-fade-in.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		9A58F8E12C7FD89D00392C81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A58F8E42C7FD89D00392C81 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9A58F8EC2C7FD8D600392C81 /* TimeDriftCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDriftCalculator.swift; sourceTree = "<group>"; };
+		9A58F8EE2C82232C00392C81 /* demo-alert-fade-in.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "demo-alert-fade-in.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 				9A58F8DF2C7FD89D00392C81 /* ContentView.swift */,
 				9A58F8E12C7FD89D00392C81 /* Assets.xcassets */,
 				9A58F8E32C7FD89D00392C81 /* Preview Content */,
+				9A58F8EE2C82232C00392C81 /* demo-alert-fade-in.swift */,
 			);
 			path = Playground;
 			sourceTree = "<group>";
@@ -150,6 +153,7 @@
 			files = (
 				9A58F8E02C7FD89D00392C81 /* ContentView.swift in Sources */,
 				9A58F8ED2C7FD8D600392C81 /* TimeDriftCalculator.swift in Sources */,
+				9A58F8EF2C82232C00392C81 /* demo-alert-fade-in.swift in Sources */,
 				9A58F8DE2C7FD89D00392C81 /* PlaygroundApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
