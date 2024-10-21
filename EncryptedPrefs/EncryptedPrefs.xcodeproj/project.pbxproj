@@ -1,0 +1,540 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9A9888F82CC6A21900177213 /* EncryptedPrefsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9888F72CC6A21900177213 /* EncryptedPrefsApp.swift */; };
+		9A9888FC2CC6A21A00177213 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A9888FB2CC6A21A00177213 /* Assets.xcassets */; };
+		9A9888FF2CC6A21A00177213 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A9888FE2CC6A21A00177213 /* Preview Assets.xcassets */; };
+		9A9889072CC6A23800177213 /* SecureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889062CC6A23800177213 /* SecureStore.swift */; };
+		9A9889092CC6AC4800177213 /* SecureStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889082CC6AC4800177213 /* SecureStoreError.swift */; };
+		9A98890B2CC6AC6300177213 /* EncryptedPreferencePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A98890A2CC6AC6300177213 /* EncryptedPreferencePlugin.swift */; };
+		9A98890D2CC6AC9100177213 /* BiometricsPreferencePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A98890C2CC6AC9100177213 /* BiometricsPreferencePlugin.swift */; };
+		9A98890F2CC6AE9300177213 /* SecureEnclavePreferencePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A98890E2CC6AE9300177213 /* SecureEnclavePreferencePlugin.swift */; };
+		9A9889112CC6AFAD00177213 /* BiometricsSecureEnclavePreferencePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889102CC6AFAD00177213 /* BiometricsSecureEnclavePreferencePlugin.swift */; };
+		9A9889132CC6B07000177213 /* EncryptedPreferencePluginInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889122CC6B07000177213 /* EncryptedPreferencePluginInterface.swift */; };
+		9A98891B2CC6B1D400177213 /* EncryptedPrefsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A98891A2CC6B1D400177213 /* EncryptedPrefsTests.swift */; };
+		9A9889222CC6B1E500177213 /* SecureStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889212CC6B1E500177213 /* SecureStoreTests.swift */; };
+		9A9889242CC6B20D00177213 /* MockLAContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889232CC6B20D00177213 /* MockLAContext.swift */; };
+		9A9889272CC6B57900177213 /* StorageTypeUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889262CC6B57900177213 /* StorageTypeUI.swift */; };
+		9A9889292CC6B58E00177213 /* SecureStoreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889282CC6B58E00177213 /* SecureStoreListView.swift */; };
+		9A98892B2CC6B59F00177213 /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A98892A2CC6B59F00177213 /* AddItemView.swift */; };
+		9A98892D2CC6B75300177213 /* StoredItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A98892C2CC6B75300177213 /* StoredItem.swift */; };
+		9A98892F2CC6B92000177213 /* SecureStoreListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A98892E2CC6B92000177213 /* SecureStoreListViewModel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9A98891C2CC6B1D400177213 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A9888EC2CC6A21900177213 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A9888F32CC6A21900177213;
+			remoteInfo = EncryptedPrefs;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9A9888F42CC6A21900177213 /* EncryptedPrefs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EncryptedPrefs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A9888F72CC6A21900177213 /* EncryptedPrefsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedPrefsApp.swift; sourceTree = "<group>"; };
+		9A9888FB2CC6A21A00177213 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9A9888FE2CC6A21A00177213 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9A9889062CC6A23800177213 /* SecureStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStore.swift; sourceTree = "<group>"; };
+		9A9889082CC6AC4800177213 /* SecureStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStoreError.swift; sourceTree = "<group>"; };
+		9A98890A2CC6AC6300177213 /* EncryptedPreferencePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedPreferencePlugin.swift; sourceTree = "<group>"; };
+		9A98890C2CC6AC9100177213 /* BiometricsPreferencePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsPreferencePlugin.swift; sourceTree = "<group>"; };
+		9A98890E2CC6AE9300177213 /* SecureEnclavePreferencePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureEnclavePreferencePlugin.swift; sourceTree = "<group>"; };
+		9A9889102CC6AFAD00177213 /* BiometricsSecureEnclavePreferencePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsSecureEnclavePreferencePlugin.swift; sourceTree = "<group>"; };
+		9A9889122CC6B07000177213 /* EncryptedPreferencePluginInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedPreferencePluginInterface.swift; sourceTree = "<group>"; };
+		9A9889182CC6B1D400177213 /* EncryptedPrefsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EncryptedPrefsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A98891A2CC6B1D400177213 /* EncryptedPrefsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedPrefsTests.swift; sourceTree = "<group>"; };
+		9A9889212CC6B1E500177213 /* SecureStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStoreTests.swift; sourceTree = "<group>"; };
+		9A9889232CC6B20D00177213 /* MockLAContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLAContext.swift; sourceTree = "<group>"; };
+		9A9889262CC6B57900177213 /* StorageTypeUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageTypeUI.swift; sourceTree = "<group>"; };
+		9A9889282CC6B58E00177213 /* SecureStoreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStoreListView.swift; sourceTree = "<group>"; };
+		9A98892A2CC6B59F00177213 /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
+		9A98892C2CC6B75300177213 /* StoredItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredItem.swift; sourceTree = "<group>"; };
+		9A98892E2CC6B92000177213 /* SecureStoreListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStoreListViewModel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9A9888F12CC6A21900177213 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A9889152CC6B1D400177213 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9A9888EB2CC6A21900177213 = {
+			isa = PBXGroup;
+			children = (
+				9A9888F62CC6A21900177213 /* EncryptedPrefs */,
+				9A9889192CC6B1D400177213 /* EncryptedPrefsTests */,
+				9A9888F52CC6A21900177213 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9A9888F52CC6A21900177213 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9A9888F42CC6A21900177213 /* EncryptedPrefs.app */,
+				9A9889182CC6B1D400177213 /* EncryptedPrefsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9A9888F62CC6A21900177213 /* EncryptedPrefs */ = {
+			isa = PBXGroup;
+			children = (
+				9A9888F72CC6A21900177213 /* EncryptedPrefsApp.swift */,
+				9A9889252CC6B56800177213 /* SecureStoreList */,
+				9A9889052CC6A21F00177213 /* Encryption */,
+				9A9888FB2CC6A21A00177213 /* Assets.xcassets */,
+				9A9888FD2CC6A21A00177213 /* Preview Content */,
+			);
+			path = EncryptedPrefs;
+			sourceTree = "<group>";
+		};
+		9A9888FD2CC6A21A00177213 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9A9888FE2CC6A21A00177213 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9A9889052CC6A21F00177213 /* Encryption */ = {
+			isa = PBXGroup;
+			children = (
+				9A9889062CC6A23800177213 /* SecureStore.swift */,
+				9A9889082CC6AC4800177213 /* SecureStoreError.swift */,
+				9A9889122CC6B07000177213 /* EncryptedPreferencePluginInterface.swift */,
+				9A98890A2CC6AC6300177213 /* EncryptedPreferencePlugin.swift */,
+				9A98890C2CC6AC9100177213 /* BiometricsPreferencePlugin.swift */,
+				9A98890E2CC6AE9300177213 /* SecureEnclavePreferencePlugin.swift */,
+				9A9889102CC6AFAD00177213 /* BiometricsSecureEnclavePreferencePlugin.swift */,
+			);
+			path = Encryption;
+			sourceTree = "<group>";
+		};
+		9A9889192CC6B1D400177213 /* EncryptedPrefsTests */ = {
+			isa = PBXGroup;
+			children = (
+				9A98891A2CC6B1D400177213 /* EncryptedPrefsTests.swift */,
+				9A9889212CC6B1E500177213 /* SecureStoreTests.swift */,
+				9A9889232CC6B20D00177213 /* MockLAContext.swift */,
+			);
+			path = EncryptedPrefsTests;
+			sourceTree = "<group>";
+		};
+		9A9889252CC6B56800177213 /* SecureStoreList */ = {
+			isa = PBXGroup;
+			children = (
+				9A9889262CC6B57900177213 /* StorageTypeUI.swift */,
+				9A9889282CC6B58E00177213 /* SecureStoreListView.swift */,
+				9A98892E2CC6B92000177213 /* SecureStoreListViewModel.swift */,
+				9A98892A2CC6B59F00177213 /* AddItemView.swift */,
+				9A98892C2CC6B75300177213 /* StoredItem.swift */,
+			);
+			path = SecureStoreList;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9A9888F32CC6A21900177213 /* EncryptedPrefs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A9889022CC6A21A00177213 /* Build configuration list for PBXNativeTarget "EncryptedPrefs" */;
+			buildPhases = (
+				9A9888F02CC6A21900177213 /* Sources */,
+				9A9888F12CC6A21900177213 /* Frameworks */,
+				9A9888F22CC6A21900177213 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EncryptedPrefs;
+			productName = EncryptedPrefs;
+			productReference = 9A9888F42CC6A21900177213 /* EncryptedPrefs.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9A9889172CC6B1D400177213 /* EncryptedPrefsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A98891E2CC6B1D400177213 /* Build configuration list for PBXNativeTarget "EncryptedPrefsTests" */;
+			buildPhases = (
+				9A9889142CC6B1D400177213 /* Sources */,
+				9A9889152CC6B1D400177213 /* Frameworks */,
+				9A9889162CC6B1D400177213 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9A98891D2CC6B1D400177213 /* PBXTargetDependency */,
+			);
+			name = EncryptedPrefsTests;
+			productName = EncryptedPrefsTests;
+			productReference = 9A9889182CC6B1D400177213 /* EncryptedPrefsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9A9888EC2CC6A21900177213 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					9A9888F32CC6A21900177213 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					9A9889172CC6B1D400177213 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 9A9888F32CC6A21900177213;
+					};
+				};
+			};
+			buildConfigurationList = 9A9888EF2CC6A21900177213 /* Build configuration list for PBXProject "EncryptedPrefs" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9A9888EB2CC6A21900177213;
+			productRefGroup = 9A9888F52CC6A21900177213 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9A9888F32CC6A21900177213 /* EncryptedPrefs */,
+				9A9889172CC6B1D400177213 /* EncryptedPrefsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9A9888F22CC6A21900177213 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A9888FF2CC6A21A00177213 /* Preview Assets.xcassets in Resources */,
+				9A9888FC2CC6A21A00177213 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A9889162CC6B1D400177213 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9A9888F02CC6A21900177213 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A98892F2CC6B92000177213 /* SecureStoreListViewModel.swift in Sources */,
+				9A98890B2CC6AC6300177213 /* EncryptedPreferencePlugin.swift in Sources */,
+				9A98890F2CC6AE9300177213 /* SecureEnclavePreferencePlugin.swift in Sources */,
+				9A9889272CC6B57900177213 /* StorageTypeUI.swift in Sources */,
+				9A98892D2CC6B75300177213 /* StoredItem.swift in Sources */,
+				9A98890D2CC6AC9100177213 /* BiometricsPreferencePlugin.swift in Sources */,
+				9A9889112CC6AFAD00177213 /* BiometricsSecureEnclavePreferencePlugin.swift in Sources */,
+				9A9889292CC6B58E00177213 /* SecureStoreListView.swift in Sources */,
+				9A98892B2CC6B59F00177213 /* AddItemView.swift in Sources */,
+				9A9889132CC6B07000177213 /* EncryptedPreferencePluginInterface.swift in Sources */,
+				9A9888F82CC6A21900177213 /* EncryptedPrefsApp.swift in Sources */,
+				9A9889072CC6A23800177213 /* SecureStore.swift in Sources */,
+				9A9889092CC6AC4800177213 /* SecureStoreError.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A9889142CC6B1D400177213 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A9889222CC6B1E500177213 /* SecureStoreTests.swift in Sources */,
+				9A98891B2CC6B1D400177213 /* EncryptedPrefsTests.swift in Sources */,
+				9A9889242CC6B20D00177213 /* MockLAContext.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9A98891D2CC6B1D400177213 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9A9888F32CC6A21900177213 /* EncryptedPrefs */;
+			targetProxy = 9A98891C2CC6B1D400177213 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		9A9889002CC6A21A00177213 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9A9889012CC6A21A00177213 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9A9889032CC6A21A00177213 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EncryptedPrefs/Preview Content\"";
+				DEVELOPMENT_TEAM = 4956A4G3WL;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We use Face ID to secure your data";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adamdahan.EncryptedPrefs;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9A9889042CC6A21A00177213 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"EncryptedPrefs/Preview Content\"";
+				DEVELOPMENT_TEAM = 4956A4G3WL;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "We use Face ID to secure your data";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adamdahan.EncryptedPrefs;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		9A98891F2CC6B1D400177213 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4956A4G3WL;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adamdahan.EncryptedPrefsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EncryptedPrefs.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EncryptedPrefs";
+			};
+			name = Debug;
+		};
+		9A9889202CC6B1D400177213 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4956A4G3WL;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adamdahan.EncryptedPrefsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EncryptedPrefs.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EncryptedPrefs";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9A9888EF2CC6A21900177213 /* Build configuration list for PBXProject "EncryptedPrefs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A9889002CC6A21A00177213 /* Debug */,
+				9A9889012CC6A21A00177213 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A9889022CC6A21A00177213 /* Build configuration list for PBXNativeTarget "EncryptedPrefs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A9889032CC6A21A00177213 /* Debug */,
+				9A9889042CC6A21A00177213 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A98891E2CC6B1D400177213 /* Build configuration list for PBXNativeTarget "EncryptedPrefsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A98891F2CC6B1D400177213 /* Debug */,
+				9A9889202CC6B1D400177213 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9A9888EC2CC6A21900177213 /* Project object */;
+}

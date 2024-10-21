@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct CustomSheetView<Content: View>: View {
-    
-    private var gap: CGFloat = 56
-    
+        
     @Binding var isPresented: Bool
     @State private var contentHeight: CGFloat = 0 // Dynamic height of the content
     let maxHeight: CGFloat // Maximum height for the sheet
@@ -38,10 +36,7 @@ struct CustomSheetView<Content: View>: View {
             // The sheet content with slide animation
             VStack {
                 Spacer()
-                
                 VStack(spacing: 0) {
-                    
-                    // Content with dynamic height calculation
                     content
                         .background(GeometryReader { geometry in
                             Color.clear
@@ -52,23 +47,11 @@ struct CustomSheetView<Content: View>: View {
                                     contentHeight = min(newHeight, maxHeight)
                                 }
                         })
-                    
-//                    // Dismiss button (optional, can customize)
-//                    Button(action: {
-//                        withAnimation(.easeInOut) {
-//                            isPresented = false
-//                        }
-//                    }) {
-//                        Text("Dismiss")
-//                            .font(.headline)
-//                            .foregroundColor(.blue)
-//                    }
-//                    .padding(.top, 8)
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: contentHeight) // Dynamic height
-                .background(RoundedRectangle(cornerRadius: 10).fill(Color.white))
-                .offset(y: isPresented ? gap : contentHeight + gap) // Slide in and out
+                .background(RoundedRectangle(cornerRadius: 0).fill(Color.white))
+                .offset(y: isPresented ? 0 : contentHeight) // Slide in and out
                 .animation(.easeInOut(duration: 0.3), value: isPresented)
             }
         }

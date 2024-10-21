@@ -18,7 +18,7 @@ struct ContentView: View {
         static let vStackSpacing: CGFloat = 10.0
         static let rowHeight: CGFloat = 84.0
         static let headerHeight: CGFloat = 40
-        static let footerHeight: CGFloat = 200
+        static let footerHeight: CGFloat = 60
     }
     
     @State private var cards = [
@@ -37,6 +37,7 @@ struct ContentView: View {
 
             CustomSheetView(isPresented: $showSheet, maxHeight: Constants.rowHeight * CGFloat(maxCount) + (Constants.headerHeight + Constants.footerHeight)) {
                 VStack(spacing: 0) {
+                   
                     Rectangle()
                         .fill(Color.gray.opacity(0.2))
                         .frame(height: Constants.headerHeight)
@@ -63,6 +64,7 @@ struct ContentView: View {
                         }
                     
                 }
+                .edgesIgnoringSafeArea(.all)
             }
         }
     }
@@ -72,6 +74,9 @@ struct ContentView: View {
             ForEach(cards) { card in
                 Rectangle().fill(Color.white)
                     .frame(height: Constants.rowHeight)
+                    .overlay(
+                        Text("Hello")
+                    )
                 Divider()
             }
         }
@@ -93,9 +98,6 @@ struct ContentView: View {
         return Constants.headerHeight + totalCardHeight + totalSpacing + Constants.footerHeight
     }
 }
-
-
-
 
 #Preview {
     ContentView()
