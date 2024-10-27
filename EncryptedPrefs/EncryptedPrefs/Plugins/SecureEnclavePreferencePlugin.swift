@@ -10,11 +10,11 @@ import Foundation
 @objc class SecureEnclavePreferencePlugin: NSObject, EncryptedPreferencePluginInterface {
 
     // MARK: - Properties
-    private let secureStore = SecureEnclaveStore(service: "com.cibc.secureenclave.preferences")
+    private let secureEnclaveStore = SecureEnclaveStore(service: "com.cibc.secureenclave.preferences")
 
     // MARK: - Get Preference
     func getPreference(key: String, default: String) async throws -> String {
-        guard let data = secureStore.retrieve(forKey: key, biometric: false) else {
+        guard let data = secureEnclaveStore.retrieve(forKey: key, biometric: false) else {
             return `default`  // Return default if no data is found
         }
         guard let value = String(data: data, encoding: .utf8) else {
@@ -28,7 +28,7 @@ import Foundation
         guard let data = value.data(using: .utf8) else {
             throw StoreError.encodingError  // Handle invalid string encoding
         }
-        let success = secureStore.save(data: data, forKey: key, biometric: false)
+        let success = secureEnclaveStore.save(data: data, forKey: key, biometric: false)
         if !success {
             throw StoreError.keychainError("Failed to save data to Secure Enclave.")
         }
@@ -36,13 +36,13 @@ import Foundation
 
     // MARK: - Has Preference
     func hasPreference(key: String) async throws -> Bool {
-        let data = secureStore.retrieve(forKey: key, biometric: false)
+        let data = secureEnclaveStore.retrieve(forKey: key, biometric: false)
         return data != nil  // Return true if data exists, false otherwise
     }
 
     // MARK: - Remove Preference
     func removePreference(key: String) async throws {
-        let success = secureStore.delete(forKey: key)
+        let success = secureEnclaveStore.delete(forKey: key)
         if !success {
             throw StoreError.keychainError("Failed to delete item from Secure Enclave.")
         }

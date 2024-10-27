@@ -7,6 +7,8 @@
 
 import Foundation
 
+// NOTE: - Operations requiring biometric authentication must run on the main thread to properly trigger the UI.
+
 @objc class BiometricsSecureEnclavePreferencePlugin: NSObject, EncryptedPreferencePluginInterface {
 
     // MARK: - Properties
