@@ -9,45 +9,47 @@ import Foundation
 
 @objc class EncryptedPreferencePlugin: NSObject, EncryptedPreferencePluginInterface {
 
-    private let secureStore = SecureStore(service: "com.cibc.encrypted.preferences")
+    private let keychainStore = KeychainStore(service: "com.cibc.encrypted.preferences")
 
+    // MARK: - Get Preference
     func getPreference(key: String, default: String) async throws -> String {
-        guard let data = secureStore.retrieve(forKey: key, storageType: .keychain(biometric: false)) else {
-            throw SecureStoreError.dataNotFound
+        guard let data = keychainStore.retrieve(forKey: key, biometric: false) else {
+            return `default`  // Return default if data is not found
         }
         guard let value = String(data: data, encoding: .utf8) else {
-            throw SecureStoreError.encodingError
+            throw StoreError.encodingError  // Handle encoding error
         }
         return value
     }
 
+    // MARK: - Put Preference
     func putPreference(key: String, value: String) async throws {
         guard let data = value.data(using: .utf8) else {
-            throw SecureStoreError.encodingError
+            throw StoreError.encodingError  // Handle invalid string encoding
         }
 
-        let deleted = secureStore.delete(forKey: key)
+        let deleted = keychainStore.delete(forKey: key)
         if !deleted {
-            throw SecureStoreError.keychainError("Failed to delete previously stored value for key")
+            throw StoreError.keychainError("Failed to delete previously stored value for key")
         }
 
-        let success = secureStore.save(data: data, forKey: key, storageType: .keychain(biometric: false))
+        let success = keychainStore.save(data: data, forKey: key, biometric: false)
         if !success {
-            throw SecureStoreError.keychainError("Failed to save data to Keychain.")
+            throw StoreError.keychainError("Failed to save data to Keychain.")
         }
     }
 
+    // MARK: - Has Preference
     func hasPreference(key: String) async throws -> Bool {
-        guard secureStore.retrieve(forKey: key, storageType: .keychain(biometric: false)) != nil else {
-            throw SecureStoreError.dataNotFound
-        }
-        return true
+        let data = keychainStore.retrieve(forKey: key, biometric: false)
+        return data != nil  // Return true if data exists, false otherwise
     }
-    
+
+    // MARK: - Remove Preference
     func removePreference(key: String) async throws {
-        let success = secureStore.delete(forKey: key)
+        let success = keychainStore.delete(forKey: key)
         if !success {
-            throw SecureStoreError.keychainError("Failed to delete item from Keychain.")
+            throw StoreError.keychainError("Failed to delete item from Keychain.")
         }
     }
 }

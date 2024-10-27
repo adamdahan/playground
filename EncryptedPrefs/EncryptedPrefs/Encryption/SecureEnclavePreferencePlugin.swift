@@ -7,19 +7,17 @@
 
 import Foundation
 
-import Foundation
-
 @objc class SecureEnclavePreferencePlugin: NSObject, EncryptedPreferencePluginInterface {
 
-    private let secureStore = SecureStore(service: "com.cibc.secureenclave.preferences")
+    private let secureStore = SecureEnclaveStore(service: "com.cibc.secureenclave.preferences")
 
     // MARK: - Get Preference
     func getPreference(key: String, default: String) async throws -> String {
-        guard let data = secureStore.retrieve(forKey: key, storageType: .secureEnclave) else {
+        guard let data = secureStore.retrieve(forKey: key, biometric: false) else {
             return `default`  // Return default if no data is found
         }
         guard let value = String(data: data, encoding: .utf8) else {
-            throw SecureStoreError.encodingError  // Handle encoding error
+            throw StoreError.encodingError  // Handle encoding error
         }
         return value
     }
@@ -27,24 +25,25 @@ import Foundation
     // MARK: - Put Preference
     func putPreference(key: String, value: String) async throws {
         guard let data = value.data(using: .utf8) else {
-            throw SecureStoreError.encodingError  // Handle invalid string encoding
+            throw StoreError.encodingError  // Handle invalid string encoding
         }
-        let success = secureStore.save(data: data, forKey: key, storageType: .secureEnclave)
+        let success = secureStore.save(data: data, forKey: key, biometric: false)
         if !success {
-            throw SecureStoreError.keychainError("Failed to save data to Secure Enclave.")
+            throw StoreError.keychainError("Failed to save data to Secure Enclave.")
         }
     }
 
     // MARK: - Has Preference
     func hasPreference(key: String) async throws -> Bool {
-        let data = secureStore.retrieve(forKey: key, storageType: .secureEnclave)
+        let data = secureStore.retrieve(forKey: key, biometric: false)
         return data != nil  // Return true if data exists, false otherwise
     }
-    
+
+    // MARK: - Remove Preference
     func removePreference(key: String) async throws {
         let success = secureStore.delete(forKey: key)
         if !success {
-            throw SecureStoreError.keychainError("Failed to delete item from Keychain.")
+            throw StoreError.keychainError("Failed to delete item from Secure Enclave.")
         }
     }
 }
