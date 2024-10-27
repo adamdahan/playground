@@ -25,20 +25,3 @@ class LAContextWrapper: LAContextProtocol {
         context.evaluatePolicy(policy, localizedReason: localizedReason, reply: reply)
     }
 }
-
-class MockLAContext: LAContextProtocol {
-    var canEvaluatePolicyReturnValue = true
-    var evaluatePolicyCompletionHandler : ((Bool, Error?) -> Void)?
-
-    func canEvaluatePolicy(_ policy: LAPolicy, error _: NSErrorPointer) -> Bool {
-        return canEvaluatePolicyReturnValue
-    }
-
-    func evaluatePolicy(_ policy: LAPolicy, localizedReason _: String, reply:@escaping (Bool, Error?) -> Void) {
-        if let handler = evaluatePolicyCompletionHandler {
-            handler(true, nil) // Default to success; you can customize this in tests.
-        } else {
-            reply(true, nil)
-        }
-    }
-}

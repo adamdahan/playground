@@ -39,8 +39,10 @@ class SecureEnclaveStore {
 
     /// Retrieve data from the Secure Enclave.
     func retrieve(forKey key: String, biometric: Bool) -> Data? {
-        guard let privateKey = retrievePrivateKey(forKey: key, biometric: biometric),
-              let encryptedData = retrieveEncryptedData(forKey: key) else {
+        guard 
+            let privateKey = retrievePrivateKey(forKey: key, biometric: biometric),
+            let encryptedData = retrieveEncryptedData(forKey: key)
+        else {
             print("Failed to retrieve data or key.")
             return nil
         }
@@ -104,11 +106,9 @@ class SecureEnclaveStore {
                 return nil
             }
         }
-
         if let existingKey = retrievePrivateKey(forKey: key, biometric: biometric) {
             return existingKey
         }
-
         print("Key not found. Creating a new Secure Enclave key...")
         return createSecureEnclaveKey(forKey: key, biometric: biometric)
     }
@@ -170,7 +170,6 @@ class SecureEnclaveStore {
         }
         
         print("Successfully created Secure Enclave key.")
-        
         return newKey
     }
 

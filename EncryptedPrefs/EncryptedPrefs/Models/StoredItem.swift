@@ -10,6 +10,6 @@ import Foundation
 struct StoredItem: Identifiable, Codable {
     var id = UUID()
     let key: String
-    let storageType: StorageTypeUI
+    let storageType: StorageType
     var isRevealed: Bool = false
 }

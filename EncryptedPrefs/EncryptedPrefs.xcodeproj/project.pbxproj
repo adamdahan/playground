@@ -17,7 +17,7 @@
 		9A98890F2CC6AE9300177213 /* SecureEnclavePreferencePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A98890E2CC6AE9300177213 /* SecureEnclavePreferencePlugin.swift */; };
 		9A9889112CC6AFAD00177213 /* BiometricsSecureEnclavePreferencePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889102CC6AFAD00177213 /* BiometricsSecureEnclavePreferencePlugin.swift */; };
 		9A9889132CC6B07000177213 /* EncryptedPreferencePluginInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889122CC6B07000177213 /* EncryptedPreferencePluginInterface.swift */; };
-		9A9889272CC6B57900177213 /* StorageTypeUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889262CC6B57900177213 /* StorageTypeUI.swift */; };
+		9A9889272CC6B57900177213 /* StorageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889262CC6B57900177213 /* StorageType.swift */; };
 		9A9889292CC6B58E00177213 /* SecureStoreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889282CC6B58E00177213 /* SecureStoreListView.swift */; };
 		9A98892B2CC6B59F00177213 /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A98892A2CC6B59F00177213 /* AddItemView.swift */; };
 		9A98892D2CC6B75300177213 /* StoredItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A98892C2CC6B75300177213 /* StoredItem.swift */; };
@@ -26,6 +26,7 @@
 		9A9889342CCE932000177213 /* KeychainStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889332CCE932000177213 /* KeychainStoreTests.swift */; };
 		9A9889362CCE996800177213 /* LAContextProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889352CCE996800177213 /* LAContextProtocol.swift */; };
 		9A9889382CCE9B7600177213 /* SecureEnclaveStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9889372CCE9B7600177213 /* SecureEnclaveStoreTests.swift */; };
+		9AAA629A2CCEB57300CB09B0 /* MockLAContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAA62992CCEB57300CB09B0 /* MockLAContext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +52,7 @@
 		9A9889102CC6AFAD00177213 /* BiometricsSecureEnclavePreferencePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsSecureEnclavePreferencePlugin.swift; sourceTree = "<group>"; };
 		9A9889122CC6B07000177213 /* EncryptedPreferencePluginInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedPreferencePluginInterface.swift; sourceTree = "<group>"; };
 		9A9889182CC6B1D400177213 /* EncryptedPrefsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EncryptedPrefsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A9889262CC6B57900177213 /* StorageTypeUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageTypeUI.swift; sourceTree = "<group>"; };
+		9A9889262CC6B57900177213 /* StorageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageType.swift; sourceTree = "<group>"; };
 		9A9889282CC6B58E00177213 /* SecureStoreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStoreListView.swift; sourceTree = "<group>"; };
 		9A98892A2CC6B59F00177213 /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
 		9A98892C2CC6B75300177213 /* StoredItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredItem.swift; sourceTree = "<group>"; };
@@ -60,6 +61,7 @@
 		9A9889332CCE932000177213 /* KeychainStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStoreTests.swift; sourceTree = "<group>"; };
 		9A9889352CCE996800177213 /* LAContextProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAContextProtocol.swift; sourceTree = "<group>"; };
 		9A9889372CCE9B7600177213 /* SecureEnclaveStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureEnclaveStoreTests.swift; sourceTree = "<group>"; };
+		9AAA62992CCEB57300CB09B0 /* MockLAContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLAContext.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,11 +104,13 @@
 			isa = PBXGroup;
 			children = (
 				9A9888F72CC6A21900177213 /* EncryptedPrefsApp.swift */,
-				9A98893A2CCEA2A800177213 /* Enumerations */,
-				9A9889392CCEA28A00177213 /* Protocol */,
+				9A9889252CC6B56800177213 /* Scenes */,
 				9A9889322CCE8CD000177213 /* Stores */,
-				9A9889252CC6B56800177213 /* SecureStoreList */,
-				9A9889052CC6A21F00177213 /* Encryption */,
+				9A98893A2CCEA2A800177213 /* Enumerations */,
+				9A9889392CCEA28A00177213 /* Protocols */,
+				9A9889052CC6A21F00177213 /* Plugins */,
+				9AAA629D2CCEB5F300CB09B0 /* Models */,
+				9AAA62982CCEB56700CB09B0 /* Mock */,
 				9A9888FB2CC6A21A00177213 /* Assets.xcassets */,
 				9A9888FD2CC6A21A00177213 /* Preview Content */,
 			);
@@ -121,7 +125,7 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		9A9889052CC6A21F00177213 /* Encryption */ = {
+		9A9889052CC6A21F00177213 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
 				9A98890A2CC6AC6300177213 /* EncryptedPreferencePlugin.swift */,
@@ -129,7 +133,7 @@
 				9A98890E2CC6AE9300177213 /* SecureEnclavePreferencePlugin.swift */,
 				9A9889102CC6AFAD00177213 /* BiometricsSecureEnclavePreferencePlugin.swift */,
 			);
-			path = Encryption;
+			path = Plugins;
 			sourceTree = "<group>";
 		};
 		9A9889192CC6B1D400177213 /* EncryptedPrefsTests */ = {
@@ -141,16 +145,13 @@
 			path = EncryptedPrefsTests;
 			sourceTree = "<group>";
 		};
-		9A9889252CC6B56800177213 /* SecureStoreList */ = {
+		9A9889252CC6B56800177213 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				9A9889262CC6B57900177213 /* StorageTypeUI.swift */,
-				9A9889282CC6B58E00177213 /* SecureStoreListView.swift */,
-				9A98892E2CC6B92000177213 /* SecureStoreListViewModel.swift */,
-				9A98892A2CC6B59F00177213 /* AddItemView.swift */,
-				9A98892C2CC6B75300177213 /* StoredItem.swift */,
+				9AAA629B2CCEB5DE00CB09B0 /* Store List */,
+				9AAA629C2CCEB5E900CB09B0 /* Add Item */,
 			);
-			path = SecureStoreList;
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 		9A9889322CCE8CD000177213 /* Stores */ = {
@@ -163,20 +164,54 @@
 			path = Stores;
 			sourceTree = "<group>";
 		};
-		9A9889392CCEA28A00177213 /* Protocol */ = {
+		9A9889392CCEA28A00177213 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
 				9A9889122CC6B07000177213 /* EncryptedPreferencePluginInterface.swift */,
 			);
-			path = Protocol;
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		9A98893A2CCEA2A800177213 /* Enumerations */ = {
 			isa = PBXGroup;
 			children = (
+				9A9889262CC6B57900177213 /* StorageType.swift */,
 				9A9889082CC6AC4800177213 /* StoreError.swift */,
 			);
 			path = Enumerations;
+			sourceTree = "<group>";
+		};
+		9AAA62982CCEB56700CB09B0 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				9AAA62992CCEB57300CB09B0 /* MockLAContext.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		9AAA629B2CCEB5DE00CB09B0 /* Store List */ = {
+			isa = PBXGroup;
+			children = (
+				9A9889282CC6B58E00177213 /* SecureStoreListView.swift */,
+				9A98892E2CC6B92000177213 /* SecureStoreListViewModel.swift */,
+			);
+			path = "Store List";
+			sourceTree = "<group>";
+		};
+		9AAA629C2CCEB5E900CB09B0 /* Add Item */ = {
+			isa = PBXGroup;
+			children = (
+				9A98892A2CC6B59F00177213 /* AddItemView.swift */,
+			);
+			path = "Add Item";
+			sourceTree = "<group>";
+		};
+		9AAA629D2CCEB5F300CB09B0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9A98892C2CC6B75300177213 /* StoredItem.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,12 +318,13 @@
 				9A98892F2CC6B92000177213 /* SecureStoreListViewModel.swift in Sources */,
 				9A98890B2CC6AC6300177213 /* EncryptedPreferencePlugin.swift in Sources */,
 				9A98890F2CC6AE9300177213 /* SecureEnclavePreferencePlugin.swift in Sources */,
-				9A9889272CC6B57900177213 /* StorageTypeUI.swift in Sources */,
+				9A9889272CC6B57900177213 /* StorageType.swift in Sources */,
 				9A98892D2CC6B75300177213 /* StoredItem.swift in Sources */,
 				9A9889312CCE8C6000177213 /* KeychainStore.swift in Sources */,
 				9A98890D2CC6AC9100177213 /* BiometricsPreferencePlugin.swift in Sources */,
 				9A9889112CC6AFAD00177213 /* BiometricsSecureEnclavePreferencePlugin.swift in Sources */,
 				9A9889292CC6B58E00177213 /* SecureStoreListView.swift in Sources */,
+				9AAA629A2CCEB57300CB09B0 /* MockLAContext.swift in Sources */,
 				9A98892B2CC6B59F00177213 /* AddItemView.swift in Sources */,
 				9A9889132CC6B07000177213 /* EncryptedPreferencePluginInterface.swift in Sources */,
 				9A9888F82CC6A21900177213 /* EncryptedPrefsApp.swift in Sources */,

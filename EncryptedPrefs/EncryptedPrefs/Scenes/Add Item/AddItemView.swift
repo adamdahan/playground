@@ -13,7 +13,7 @@ struct AddItemView: View {
     
     @State private var key = ""
     @State private var value = ""
-    @State private var selectedType: StorageTypeUI = .encryptedPreferences
+    @State private var selectedType: StorageType = .encryptedPreferences
 
     var body: some View {
         NavigationView {
@@ -26,7 +26,7 @@ struct AddItemView: View {
                 }
                 Section(header: Text("Storage Type")) {
                     Picker("Select Storage Type", selection: $selectedType) {
-                        ForEach(StorageTypeUI.allCases) { type in
+                        ForEach(StorageType.allCases) { type in
                             Text(type.rawValue).tag(type)
                         }
                     }

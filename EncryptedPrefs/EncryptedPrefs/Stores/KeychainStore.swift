@@ -18,7 +18,10 @@ class KeychainStore {
     // MARK: - Public Methods
 
     /// Save data to the Keychain.
+    /// Save data to the Keychain.
+    /// Save data to the Keychain.
     func save(data: Data, forKey key: String, biometric: Bool) -> Bool {
+        
         if biometric && !laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
             print("Biometric authentication is not available.")
             return false
@@ -29,23 +32,48 @@ class KeychainStore {
             return false
         }
 
-        let query: [String: Any] = [
+        // Create the base query with service and key.
+        var query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
-            kSecAttrAccount as String: key,
+            kSecAttrAccount as String: key
+        ]
+
+        // Add the access control attribute only if biometric is enabled.
+        if biometric {
+            query[kSecAttrAccessControl as String] = accessControl
+        }
+
+        let attributes: [String: Any] = [
             kSecValueData as String: data,
-            kSecAttrAccessControl as String: accessControl,
             kSecUseAuthenticationContext as String: createLAContext(biometric)
         ]
 
-        SecItemDelete(query as CFDictionary) // Avoid duplicates.
-
-        let status = SecItemAdd(query as CFDictionary, nil)
-        if status != errSecSuccess {
-            print("Keychain save failed with status: \(status)")
+        // Check if the item already exists with the same attributes.
+        let status = SecItemCopyMatching(query as CFDictionary, nil)
+        if status == errSecSuccess {
+            // Update the existing keychain item.
+            let updateStatus = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
+            if updateStatus != errSecSuccess {
+                print("Keychain update failed with status: \(updateStatus)")
+                return false
+            }
+        } else if status == errSecItemNotFound {
+            // If it doesn't exist, add the new item.
+            var combinedQuery = query
+            attributes.forEach { combinedQuery[$0.key] = $0.value }
+            
+            let addStatus = SecItemAdd(combinedQuery as CFDictionary, nil)
+            if addStatus != errSecSuccess {
+                print("Keychain save failed with status: \(addStatus)")
+                return false
+            }
+        } else {
+            print("Keychain lookup failed with status: \(status)")
+            return false
         }
 
-        return status == errSecSuccess
+        return true
     }
 
     /// Retrieve data from the Keychain.

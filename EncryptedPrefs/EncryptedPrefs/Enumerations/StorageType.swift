@@ -1,5 +1,5 @@
 //
-//  StorageTypeUI.swift
+//  StorageType.swift
 //  EncryptedPrefs
 //
 //  Created by Adam Dahan on 2024-10-21.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum StorageTypeUI: String, Codable, CaseIterable, Identifiable {
+enum StorageType: String, Codable, CaseIterable, Identifiable {
     case encryptedPreferences = "Encrypted"
     case biometricsPreference = "Biometric"
     case secureEnclavePreference = "SecureE"

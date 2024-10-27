@@ -1,5 +1,5 @@
 //
-//  BiometricsPreferencePlugin.swift
+//  EncryptedPreferencePlugin.swift
 //  EncryptedPrefs
 //
 //  Created by Adam Dahan on 2024-10-21.
@@ -7,15 +7,15 @@
 
 import Foundation
 
-@objc class BiometricsPreferencePlugin: NSObject, EncryptedPreferencePluginInterface {
+@objc class EncryptedPreferencePlugin: NSObject, EncryptedPreferencePluginInterface {
 
     // MARK: - Properties
-    private let keychainStore = KeychainStore(service: "com.cibc.biometrics.preferences")
+    private let keychainStore = KeychainStore(service: "com.cibc.encrypted.preferences")
 
     // MARK: - Get Preference
     func getPreference(key: String, default: String) async throws -> String {
-        guard let data = keychainStore.retrieve(forKey: key, biometric: true) else {
-            throw StoreError.dataNotFound  // Throw if data is not found
+        guard let data = keychainStore.retrieve(forKey: key, biometric: false) else {
+            return `default`  // Return default if data is not found
         }
         guard let value = String(data: data, encoding: .utf8) else {
             throw StoreError.encodingError  // Handle encoding error
@@ -28,16 +28,15 @@ import Foundation
         guard let data = value.data(using: .utf8) else {
             throw StoreError.encodingError  // Handle invalid string encoding
         }
-
-        let success = keychainStore.save(data: data, forKey: key, biometric: true)
+        let success = keychainStore.save(data: data, forKey: key, biometric: false)
         if !success {
-            throw StoreError.keychainError("Failed to save data to Keychain with biometric authentication.")
+            throw StoreError.keychainError("Failed to save data to Keychain.")
         }
     }
 
     // MARK: - Has Preference
     func hasPreference(key: String) async throws -> Bool {
-        let data = keychainStore.retrieve(forKey: key, biometric: true)
+        let data = keychainStore.retrieve(forKey: key, biometric: false)
         return data != nil  // Return true if data exists, false otherwise
     }
 

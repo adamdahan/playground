@@ -37,7 +37,7 @@ import Foundation
 
     // MARK: - Add Item Logic
 
-    func addItem(key: String, value: String, type: StorageTypeUI) async {
+    func addItem(key: String, value: String, type: StorageType) async {
         do {
             switch type {
             case .encryptedPreferences:

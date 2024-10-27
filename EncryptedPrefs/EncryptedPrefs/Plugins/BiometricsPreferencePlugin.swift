@@ -1,5 +1,5 @@
 //
-//  SecureEnclavePreferencePlugin.swift
+//  BiometricsPreferencePlugin.swift
 //  EncryptedPrefs
 //
 //  Created by Adam Dahan on 2024-10-21.
@@ -7,14 +7,16 @@
 
 import Foundation
 
-@objc class SecureEnclavePreferencePlugin: NSObject, EncryptedPreferencePluginInterface {
+@objc class BiometricsPreferencePlugin: NSObject, EncryptedPreferencePluginInterface {
 
-    private let secureStore = SecureEnclaveStore(service: "com.cibc.secureenclave.preferences")
+    // MARK: - Properties
+    private let keychainStore = KeychainStore(service: "com.cibc.biometrics.preferences")
 
     // MARK: - Get Preference
+    @MainActor
     func getPreference(key: String, default: String) async throws -> String {
-        guard let data = secureStore.retrieve(forKey: key, biometric: false) else {
-            return `default`  // Return default if no data is found
+        guard let data = keychainStore.retrieve(forKey: key, biometric: true) else {
+            throw StoreError.dataNotFound  // Throw if data is not found
         }
         guard let value = String(data: data, encoding: .utf8) else {
             throw StoreError.encodingError  // Handle encoding error
@@ -23,27 +25,30 @@ import Foundation
     }
 
     // MARK: - Put Preference
+    @MainActor
     func putPreference(key: String, value: String) async throws {
         guard let data = value.data(using: .utf8) else {
             throw StoreError.encodingError  // Handle invalid string encoding
         }
-        let success = secureStore.save(data: data, forKey: key, biometric: false)
+        let success = keychainStore.save(data: data, forKey: key, biometric: true)
         if !success {
-            throw StoreError.keychainError("Failed to save data to Secure Enclave.")
+            throw StoreError.keychainError("Failed to save data to Keychain with biometric authentication.")
         }
     }
 
     // MARK: - Has Preference
+    @MainActor
     func hasPreference(key: String) async throws -> Bool {
-        let data = secureStore.retrieve(forKey: key, biometric: false)
+        let data = keychainStore.retrieve(forKey: key, biometric: true)
         return data != nil  // Return true if data exists, false otherwise
     }
 
     // MARK: - Remove Preference
+    @MainActor
     func removePreference(key: String) async throws {
-        let success = secureStore.delete(forKey: key)
+        let success = keychainStore.delete(forKey: key)
         if !success {
-            throw StoreError.keychainError("Failed to delete item from Secure Enclave.")
+            throw StoreError.keychainError("Failed to delete item from Keychain.")
         }
     }
 }
