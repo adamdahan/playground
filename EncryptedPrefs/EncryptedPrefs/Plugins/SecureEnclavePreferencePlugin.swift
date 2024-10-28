@@ -15,7 +15,7 @@ import Foundation
     // MARK: - Get Preference
     func getPreference(key: String, default: String) async throws -> String {
         guard let data = secureEnclaveStore.retrieve(forKey: key, biometric: false) else {
-            return `default`  // Return default if no data is found
+            throw StoreError.dataNotFound  // Return default if data is not found
         }
         guard let value = String(data: data, encoding: .utf8) else {
             throw StoreError.encodingError  // Handle encoding error
