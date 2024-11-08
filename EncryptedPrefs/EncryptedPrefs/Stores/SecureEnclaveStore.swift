@@ -26,7 +26,7 @@ class SecureEnclaveStore {
 
     /// Save data to the Secure Enclave.
     func save(data: Data, forKey key: String, biometric: Bool) -> Bool {
-        guard 
+        guard
             let privateKey = createOrRetrieveSecureEnclaveKey(forKey: key, biometric: biometric),
             let publicKey = SecKeyCopyPublicKey(privateKey),
             let encryptedData = encryptData(data, with: publicKey)
@@ -39,7 +39,7 @@ class SecureEnclaveStore {
 
     /// Retrieve data from the Secure Enclave.
     func retrieve(forKey key: String, biometric: Bool) -> Data? {
-        guard 
+        guard
             let privateKey = retrievePrivateKey(forKey: key, biometric: biometric),
             let encryptedData = retrieveEncryptedData(forKey: key)
         else {
@@ -71,6 +71,22 @@ class SecureEnclaveStore {
             return false
         }
         return true
+    }
+    
+    /// Check if a key exists in the Keychain.
+    func keyExists(forKey key: String) -> Bool {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: key,
+            kSecReturnData as String: false  // No need to retrieve data, just check existence
+        ]
+        
+        // Attempt to find the item in the keychain
+        let status = SecItemCopyMatching(query as CFDictionary, nil)
+        
+        // If the item is found, return true; otherwise, return false
+        return status == errSecSuccess
     }
 
     // MARK: - Private Helper Methods
@@ -189,24 +205,43 @@ class SecureEnclaveStore {
        return encryptedData as Data
    }
 
-   /// Save encrypted data to the Keychain.
-   private func saveEncryptedData(_ data : Data , forKey key : String) -> Bool {
-       let query:[String : Any] = [
-           kSecClass as String : kSecClassGenericPassword ,
-           kSecAttrService as String : service ,
-           kSecAttrAccount as String : key ,
-           kSecValueData as String : data
-       ]
-
-       SecItemDelete(query as CFDictionary)  // Avoid duplicates.
-
-       let status = SecItemAdd(query as CFDictionary , nil)
-
-       if status != errSecSuccess {
-           print("Failed to save encrypted data with status \(status)")
-       }
-       
-       return status == errSecSuccess
+    /// Save encrypted data to the Keychain.
+    private func saveEncryptedData(_ data: Data, forKey key: String) -> Bool {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: key
+        ]
+        
+        // Define attributes to update if the item already exists
+        let attributes: [String: Any] = [
+            kSecValueData as String: data
+        ]
+        
+        // Check if the item already exists in the keychain
+        let status = SecItemCopyMatching(query as CFDictionary, nil)
+        if status == errSecSuccess {
+            // Update the existing item if it exists
+            let updateStatus = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
+            if updateStatus != errSecSuccess {
+                print("Failed to update encrypted data with status \\(updateStatus)")
+                return false
+            }
+        } else if status == errSecItemNotFound {
+            // Add the item if it doesn't exist
+            var newQuery = query
+            newQuery[kSecValueData as String] = data
+            let addStatus = SecItemAdd(newQuery as CFDictionary, nil)
+            if addStatus != errSecSuccess {
+                print("Failed to save encrypted data with status \\(addStatus)")
+                return false
+            }
+        } else {
+            print("Failed to check keychain item with status \\(status)")
+            return false
+        }
+        
+        return true
    }
 
    /// Retrieve encrypted data from the Keychain.

@@ -41,7 +41,7 @@ import Foundation
     // MARK: - Has Preference
     @MainActor
     func hasPreference(key: String) async throws -> Bool {
-        return secureEnclaveStore.retrieve(forKey: key, biometric: true) != nil
+        return secureEnclaveStore.keyExists(forKey: key)
     }
 
     // MARK: - Remove Preference

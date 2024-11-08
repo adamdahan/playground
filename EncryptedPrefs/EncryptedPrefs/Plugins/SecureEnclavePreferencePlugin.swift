@@ -36,8 +36,7 @@ import Foundation
 
     // MARK: - Has Preference
     func hasPreference(key: String) async throws -> Bool {
-        let data = secureEnclaveStore.retrieve(forKey: key, biometric: false)
-        return data != nil  // Return true if data exists, false otherwise
+        secureEnclaveStore.keyExists(forKey: key)
     }
 
     // MARK: - Remove Preference
