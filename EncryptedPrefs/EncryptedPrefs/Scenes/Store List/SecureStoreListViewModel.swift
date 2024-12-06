@@ -106,18 +106,8 @@ import Foundation
         } catch SecureEnclaveError.userFallback {
             self.revealErrorString = "🚀 User Fallback."
         } catch {
-            if let secureError = error as? SecureEnclaveError {
-                switch secureError {
-                case .userFallback:
-                    self.revealErrorString = "User selected 'Enter Password' fallback. Prompt for a custom password."
-                    // Trigger your custom password flow here
-                default:
-                    self.revealErrorString = "Failed to retrieve preference: \(secureError)"
-                }
-            } else {
-                // Handle other generic errors
-                self.revealErrorString = "An unexpected error occurred: \(error)"
-            }
+            // Handle other generic errors
+            self.revealErrorString = "An unexpected error occurred: \(error)"
         }
     }
     
