@@ -17,7 +17,7 @@ import Foundation
     // MARK: - Get Preference
     @MainActor
     func getPreference(key: String, default: String) async throws -> String {
-        guard let data = secureEnclaveStore.retrieve(forKey: key, biometric: true, hasPasscodeFallback: true) else {
+        guard let data = secureEnclaveStore.retrieve(forKey: key, biometric: true, hasPasscodeFallback: false) else {
             throw StoreError.dataNotFound
         }
         guard let value = String(data: data, encoding: .utf8) else {
@@ -32,7 +32,7 @@ import Foundation
         guard let data = value.data(using: .utf8) else {
             throw StoreError.encodingError  // Handle invalid string encoding
         }
-        let success = secureEnclaveStore.save(data: data, forKey: key, biometric: true, hasPasscodeFallback: true)
+        let success = secureEnclaveStore.save(data: data, forKey: key, biometric: true, hasPasscodeFallback: false)
         if !success {
             throw StoreError.keychainError("Failed to store data with Secure Enclave.")
         }
