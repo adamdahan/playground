@@ -11,4 +11,5 @@ enum StoreError: Error {
     case keychainError(String)
     case encodingError
     case dataNotFound
+    case userFallback
 }

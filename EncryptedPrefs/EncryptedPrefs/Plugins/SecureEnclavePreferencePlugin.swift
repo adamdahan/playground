@@ -15,7 +15,7 @@ import Foundation
     // MARK: - Get Preference
     func getPreference(key: String, default: String) async throws -> String {
         do {
-            let data = try secureEnclaveStore.retrieve(forKey: key, biometric: false, hasPasscodeFallback: false)
+            let data = try secureEnclaveStore.retrieve(forKey: key, biometric: false, reason: "Authenticate to access your secure data")
             guard let value = String(data: data, encoding: .utf8) else {
                 throw StoreError.encodingError // Handle encoding error
             }
@@ -31,7 +31,7 @@ import Foundation
             throw StoreError.encodingError // Handle invalid string encoding
         }
         do {
-            try secureEnclaveStore.save(data: data, forKey: key, biometric: false, hasPasscodeFallback: false)
+            try secureEnclaveStore.save(data: data, forKey: key, biometric: false, reason: "Authenticate to access your secure data")
         } catch {
             throw StoreError.keychainError("Failed to save preference: \(error.localizedDescription)")
         }

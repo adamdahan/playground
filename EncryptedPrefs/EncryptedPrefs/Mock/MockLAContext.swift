@@ -8,18 +8,19 @@
 import LocalAuthentication
 
 class MockLAContext: LAContextProtocol {
-    var canEvaluatePolicyReturnValue = true
-    var evaluatePolicyCompletionHandler : ((Bool, Error?) -> Void)?
+    var canEvaluatePolicyReturnValue: Bool = false
+    var evaluatePolicyReply: (success: Bool, error: Error?) = (false, nil)
 
-    func canEvaluatePolicy(_ policy: LAPolicy, error _: NSErrorPointer) -> Bool {
+    func canEvaluatePolicy(_ policy: LAPolicy, error: NSErrorPointer) -> Bool {
         return canEvaluatePolicyReturnValue
     }
 
-    func evaluatePolicy(_ policy: LAPolicy, localizedReason _: String, reply:@escaping (Bool, Error?) -> Void) {
-        if let handler = evaluatePolicyCompletionHandler {
-            handler(true, nil) // Default to success; you can customize this in tests.
-        } else {
-            reply(true, nil)
-        }
+    func evaluatePolicy(_ policy: LAPolicy, localizedReason: String, reply: @escaping (Bool, Error?) -> Void) {
+        reply(evaluatePolicyReply.success, evaluatePolicyReply.error)
+    }
+
+    var localizedFallbackTitle: String?
+    var evaluatedPolicyDomainState: Data? {
+        return nil
     }
 }
