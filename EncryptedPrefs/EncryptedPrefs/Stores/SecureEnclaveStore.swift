@@ -25,24 +25,29 @@ class SecureEnclaveStore {
     // MARK: - Public Methods
 
     /// Save data to the Secure Enclave.
-    func save(data: Data, forKey key: String, biometric: Bool) -> Bool {
-        guard
-            let privateKey = createOrRetrieveSecureEnclaveKey(forKey: key, biometric: biometric),
-            let publicKey = SecKeyCopyPublicKey(privateKey),
-            let encryptedData = encryptData(data, with: publicKey)
-        else {
-            print("Failed to save data.")
+    func save(data: Data, forKey key: String, biometric: Bool, hasPasscodeFallback: Bool) -> Bool {
+        guard let privateKey = createOrRetrieveSecureEnclaveKey(forKey: key, biometric: biometric, hasPasscodeFallback: hasPasscodeFallback) else {
+            print("Failed to create or retrieve Secure Enclave key.")
             return false
         }
+        
+        guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
+            print("Failed to extract public key from Secure Enclave key.")
+            return false
+        }
+        
+        guard let encryptedData = encryptData(data, with: publicKey) else {
+            print("Failed to encrypt data.")
+            return false
+        }
+        
         return saveEncryptedData(encryptedData, forKey: key)
     }
 
     /// Retrieve data from the Secure Enclave.
-    func retrieve(forKey key: String, biometric: Bool) -> Data? {
-        guard
-            let privateKey = retrievePrivateKey(forKey: key, biometric: biometric),
-            let encryptedData = retrieveEncryptedData(forKey: key)
-        else {
+    func retrieve(forKey key: String, biometric: Bool, hasPasscodeFallback: Bool) -> Data? {
+        guard let privateKey = retrievePrivateKey(forKey: key, biometric: biometric, hasPasscodeFallback: hasPasscodeFallback),
+              let encryptedData = retrieveEncryptedData(forKey: key) else {
             print("Failed to retrieve data or key.")
             return nil
         }
@@ -72,64 +77,39 @@ class SecureEnclaveStore {
         }
         return true
     }
-    
+
     /// Check if a key exists in the Keychain.
     func keyExists(forKey key: String) -> Bool {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
             kSecAttrAccount as String: key,
-            kSecReturnData as String: false  // No need to retrieve data, just check existence
+            kSecReturnData as String: false
         ]
         
-        // Attempt to find the item in the keychain
         let status = SecItemCopyMatching(query as CFDictionary, nil)
-        
-        // If the item is found, return true; otherwise, return false
         return status == errSecSuccess
     }
 
     // MARK: - Private Helper Methods
 
-    /// Delete the Secure Enclave key.
-    private func deleteKey(forKey key: String) -> Bool {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassKey,
-            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
-            kSecAttrLabel as String: key
-        ]
-
-        let status = SecItemDelete(query as CFDictionary)
-        return status == errSecSuccess || status == errSecItemNotFound
-    }
-
-    /// Delete encrypted data from the Keychain.
-    private func deleteEncryptedData(forKey key: String) -> Bool {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: key
-        ]
-
-        let status = SecItemDelete(query as CFDictionary)
-        return status == errSecSuccess || status == errSecItemNotFound
-    }
-
-    private func createOrRetrieveSecureEnclaveKey(forKey key: String, biometric: Bool) -> SecKey? {
-        if biometric {
+    private func createOrRetrieveSecureEnclaveKey(forKey key: String, biometric: Bool, hasPasscodeFallback: Bool) -> SecKey? {
+        if biometric || hasPasscodeFallback {
             guard laContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) else {
-                print("Biometric evaluation failed.")
+                print("Biometric authentication or passcode fallback is required but unavailable.")
                 return nil
             }
         }
-        if let existingKey = retrievePrivateKey(forKey: key, biometric: biometric) {
+        
+        if let existingKey = retrievePrivateKey(forKey: key, biometric: biometric, hasPasscodeFallback: hasPasscodeFallback) {
             return existingKey
         }
+        
         print("Key not found. Creating a new Secure Enclave key...")
-        return createSecureEnclaveKey(forKey: key, biometric: biometric)
+        return createSecureEnclaveKey(forKey: key, biometric: biometric, hasPasscodeFallback: hasPasscodeFallback)
     }
 
-    private func retrievePrivateKey(forKey key: String, biometric: Bool) -> SecKey? {
+    private func retrievePrivateKey(forKey key: String, biometric: Bool, hasPasscodeFallback: Bool) -> SecKey? {
         var query: [String: Any] = [
             kSecClass as String: kSecClassKey,
             kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
@@ -137,16 +117,14 @@ class SecureEnclaveStore {
             kSecReturnRef as String: true
         ]
 
-        if biometric {
-            let context = createLAContext(biometric)
-            query[kSecUseAuthenticationContext as String] = context
+        if biometric || hasPasscodeFallback {
+            query[kSecUseAuthenticationContext as String] = createLAContext(hasPasscodeFallback: hasPasscodeFallback)
         }
 
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
 
         if status == errSecItemNotFound {
-            // Suppress unnecessary logs for a missing key during the first-time creation flow.
             return nil
         } else if status != errSecSuccess {
             print("Failed to retrieve private key with status \(status)")
@@ -156,9 +134,13 @@ class SecureEnclaveStore {
         return (item as! SecKey)
     }
 
-    /// Create a new Secure Enclave key with optional biometric authentication.
-    private func createSecureEnclaveKey(forKey key: String, biometric: Bool) -> SecKey? {
-        let flags : SecAccessControlCreateFlags = biometric ? [.privateKeyUsage, .userPresence] : [.privateKeyUsage]
+    private func createSecureEnclaveKey(forKey key: String, biometric: Bool, hasPasscodeFallback: Bool) -> SecKey? {
+        let flags: SecAccessControlCreateFlags
+        if biometric {
+            flags = hasPasscodeFallback ? [.privateKeyUsage, .userPresence] : [.privateKeyUsage, .biometryCurrentSet]
+        } else {
+            flags = .privateKeyUsage
+        }
 
         guard let accessControl = SecAccessControlCreateWithFlags(
             nil,
@@ -170,15 +152,14 @@ class SecureEnclaveStore {
             return nil
         }
 
-        let query:[String : Any] = [
-            kSecClass as String : kSecClassKey,
-            kSecAttrKeyType as String : kSecAttrKeyTypeECSECPrimeRandom,
-            kSecAttrTokenID as String : kSecAttrTokenIDSecureEnclave,
-            kSecAttrLabel as String : key,
-            kSecAttrAccessControl as String : accessControl
+        let query: [String: Any] = [
+            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+            kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
+            kSecAttrLabel as String: key,
+            kSecAttrAccessControl as String: accessControl
         ]
 
-        var error : Unmanaged<CFError>?
+        var error: Unmanaged<CFError>?
         
         guard let newKey = SecKeyCreateRandomKey(query as CFDictionary, &error) else {
             print("Failed to create Secure Enclave key with error \(error?.takeRetainedValue() as Error?)")
@@ -189,23 +170,28 @@ class SecureEnclaveStore {
         return newKey
     }
 
-   /// Encrypt data with the given public key.
-   private func encryptData(_ data : Data , with publicKey : SecKey) -> Data? {
-       var error : Unmanaged<CFError>?
-       
-       guard let encryptedData = SecKeyCreateEncryptedData(
-           publicKey ,
-           .eciesEncryptionStandardX963SHA256AESGCM ,
-           data as CFData ,
-           &error ) else {
-               print("Encryption failed with error \(error?.takeRetainedValue() as Error?)")
-               return nil
-       }
-       
-       return encryptedData as Data
-   }
+    private func createLAContext(hasPasscodeFallback: Bool) -> LAContext {
+        let context = LAContext()
+        context.localizedFallbackTitle = hasPasscodeFallback ? "Use Passcode" : ""
+        return context
+    }
 
-    /// Save encrypted data to the Keychain.
+    private func encryptData(_ data: Data, with publicKey: SecKey) -> Data? {
+        var error: Unmanaged<CFError>?
+        
+        guard let encryptedData = SecKeyCreateEncryptedData(
+            publicKey,
+            .eciesEncryptionStandardX963SHA256AESGCM,
+            data as CFData,
+            &error
+        ) else {
+            print("Encryption failed with error \(error?.takeRetainedValue() as Error?)")
+            return nil
+        }
+        
+        return encryptedData as Data
+    }
+
     private func saveEncryptedData(_ data: Data, forKey key: String) -> Bool {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -213,61 +199,57 @@ class SecureEnclaveStore {
             kSecAttrAccount as String: key
         ]
         
-        // Define attributes to update if the item already exists
         let attributes: [String: Any] = [
             kSecValueData as String: data
         ]
         
-        // Check if the item already exists in the keychain
         let status = SecItemCopyMatching(query as CFDictionary, nil)
         if status == errSecSuccess {
-            // Update the existing item if it exists
             let updateStatus = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
-            if updateStatus != errSecSuccess {
-                print("Failed to update encrypted data with status \\(updateStatus)")
-                return false
-            }
+            return updateStatus == errSecSuccess
         } else if status == errSecItemNotFound {
-            // Add the item if it doesn't exist
             var newQuery = query
             newQuery[kSecValueData as String] = data
-            let addStatus = SecItemAdd(newQuery as CFDictionary, nil)
-            if addStatus != errSecSuccess {
-                print("Failed to save encrypted data with status \\(addStatus)")
-                return false
-            }
-        } else {
-            print("Failed to check keychain item with status \\(status)")
-            return false
+            return SecItemAdd(newQuery as CFDictionary, nil) == errSecSuccess
         }
         
-        return true
-   }
+        print("Failed to check keychain item with status \(status)")
+        return false
+    }
 
-   /// Retrieve encrypted data from the Keychain.
-   private func retrieveEncryptedData(forKey key:String) -> Data? {
-       let query:[String : Any] = [
-           kSecClass as String : kSecClassGenericPassword ,
-           kSecAttrService as String : service ,
-           kSecAttrAccount as String : key ,
-           kSecReturnData as String : true ,
-           kSecMatchLimit as String : kSecMatchLimitOne
-       ]
+    private func retrieveEncryptedData(forKey key: String) -> Data? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: key,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
 
-       var dataTypeRef : AnyObject?
-       let status = SecItemCopyMatching(query as CFDictionary , &dataTypeRef)
+        var dataTypeRef: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+        return status == errSecSuccess ? dataTypeRef as? Data : nil
+    }
 
-       if status != errSecSuccess {
-           print("Failed to retrieve encrypted data with status \(status)")
-       }
-       
-       return status == errSecSuccess ? dataTypeRef as? Data : nil
-   }
+    private func deleteKey(forKey key: String) -> Bool {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassKey,
+            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
+            kSecAttrLabel as String: key
+        ]
 
-   /// Create an LAContext for biometric authentication.
-   private func createLAContext(_ biometric: Bool) -> LAContext {
-       let context = LAContext()
-       context.interactionNotAllowed = !biometric
-       return context
-   }
+        let status = SecItemDelete(query as CFDictionary)
+        return status == errSecSuccess || status == errSecItemNotFound
+    }
+
+    private func deleteEncryptedData(forKey key: String) -> Bool {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: key
+        ]
+
+        let status = SecItemDelete(query as CFDictionary)
+        return status == errSecSuccess || status == errSecItemNotFound
+    }
 }

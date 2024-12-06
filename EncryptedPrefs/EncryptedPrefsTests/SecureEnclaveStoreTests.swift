@@ -37,61 +37,51 @@ class SecureEnclaveStoreTests: XCTestCase {
         super.tearDown()
     }
 
-    func testSaveDataSuccessfully() {
-        mockLAContext.canEvaluatePolicyReturnValue = true  // Simulate successful evaluation
+    func testSaveDataSuccessfullyWithoutBiometricOrFallback() {
+        mockLAContext.canEvaluatePolicyReturnValue = false  // Simulate no biometric or fallback
 
-        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: false)
-        XCTAssertTrue(result, "Data should be saved successfully.")
+        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: false, hasPasscodeFallback: false)
+        XCTAssertTrue(result, "Data should be saved successfully without biometric or fallback.")
 
-        // Verify that the data can be retrieved correctly
-        let retrievedData = secureEnclaveStore.retrieve(forKey: testKey, biometric: false)
+        let retrievedData = secureEnclaveStore.retrieve(forKey: testKey, biometric: false, hasPasscodeFallback: false)
         XCTAssertNotNil(retrievedData, "Retrieved data should not be nil.")
         XCTAssertEqual(retrievedData, testData, "Retrieved data should match saved data.")
     }
 
+    func testSaveDataSuccessfullyWithBiometricAndFallback() {
+        mockLAContext.canEvaluatePolicyReturnValue = true  // Simulate successful evaluation
+
+        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: true, hasPasscodeFallback: true)
+        XCTAssertTrue(result, "Data should be saved successfully with biometric and fallback.")
+
+        let retrievedData = secureEnclaveStore.retrieve(forKey: testKey, biometric: true, hasPasscodeFallback: true)
+        XCTAssertNotNil(retrievedData, "Retrieved data should not be nil.")
+        XCTAssertEqual(retrievedData, testData, "Retrieved data should match saved data.")
+    }
+
+    func testSaveFailsWithoutBiometricAndFallbackEnabled() {
+        mockLAContext.canEvaluatePolicyReturnValue = false  // Simulate biometric failure
+
+        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: true, hasPasscodeFallback: true)
+        XCTAssertFalse(result, "Saving should fail when biometric evaluation fails and fallback is enabled but unavailable.")
+    }
+
     func testRetrieveNonExistentData() {
-        let retrievedData = secureEnclaveStore.retrieve(forKey: "NonExistentKey", biometric: false)
+        let retrievedData = secureEnclaveStore.retrieve(forKey: "NonExistentKey", biometric: false, hasPasscodeFallback: false)
         XCTAssertNil(retrievedData, "Retrieving non-existent data should return nil.")
     }
 
     func testDeleteDataSuccessfully() {
         // First save the data
-        _ = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: false)
+        _ = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: false, hasPasscodeFallback: false)
 
         // Now delete it
         let deleteResult = secureEnclaveStore.delete(forKey: testKey)
         XCTAssertTrue(deleteResult, "Data should be deleted successfully.")
 
         // Verify that the data is no longer retrievable
-        let retrievedDataAfterDelete = secureEnclaveStore.retrieve(forKey: testKey, biometric: false)
+        let retrievedDataAfterDelete = secureEnclaveStore.retrieve(forKey: testKey, biometric: false, hasPasscodeFallback: false)
         XCTAssertNil(retrievedDataAfterDelete, "Retrieved data after deletion should be nil.")
-    }
-
-    func testBiometricAuthenticationFailureOnSave() {
-        mockLAContext.canEvaluatePolicyReturnValue = false  // Simulate biometric failure
-
-        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: true)
-        XCTAssertFalse(result, "Saving should fail when biometric evaluation fails.")
-    }
-
-    /// This will fail miserably in the simulator.
-    func testBiometricAuthenticationSuccessOnSave() {
-        mockLAContext.canEvaluatePolicyReturnValue = true  // Simulate successful evaluation
-
-        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: true)
-        
-        XCTAssertTrue(result, "Data should be saved successfully with biometric authentication.")
-
-        // Verify that the data can be retrieved correctly
-        let retrievedData = secureEnclaveStore.retrieve(forKey: testKey, biometric: true)
-        
-        XCTAssertNotNil(retrievedData, "Retrieved data should not be nil.")
-        
-        if let retrievedData = retrievedData {
-            XCTAssertEqual(retrievedData, testData, "Retrieved data should match saved data.")
-        } else {
-            XCTFail("Failed to retrieve data after saving.")
-        }
     }
 
     func testDeleteNonExistentItem() {
@@ -99,4 +89,23 @@ class SecureEnclaveStoreTests: XCTestCase {
         let deleteResult = secureEnclaveStore.delete(forKey: "NonExistentKey")
         XCTAssertTrue(deleteResult, "Deleting a non-existent item should return true.")
     }
+
+    func testSaveAndRetrieveWithBiometricOnly() {
+        mockLAContext.canEvaluatePolicyReturnValue = true  // Simulate successful biometric authentication
+
+        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: true, hasPasscodeFallback: false)
+        XCTAssertTrue(result, "Data should be saved successfully with biometric authentication only.")
+
+        let retrievedData = secureEnclaveStore.retrieve(forKey: testKey, biometric: true, hasPasscodeFallback: false)
+        XCTAssertNotNil(retrievedData, "Retrieved data should not be nil.")
+        XCTAssertEqual(retrievedData, testData, "Retrieved data should match saved data.")
+    }
+
+    func testSaveFailsWithBiometricDisabled() {
+        mockLAContext.canEvaluatePolicyReturnValue = true  // Simulate policy can be evaluated, but biometric is disabled
+
+        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: false, hasPasscodeFallback: false)
+        XCTAssertTrue(result, "Data should be saved successfully even if biometric is disabled.")
+    }
 }
+
