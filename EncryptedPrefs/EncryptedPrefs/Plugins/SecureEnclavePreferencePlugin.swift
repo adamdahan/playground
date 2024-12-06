@@ -14,36 +14,39 @@ import Foundation
 
     // MARK: - Get Preference
     func getPreference(key: String, default: String) async throws -> String {
-        guard let data = secureEnclaveStore.retrieve(forKey: key, biometric: false, hasPasscodeFallback: false) else {
-            throw StoreError.dataNotFound  // Return default if data is not found
+        do {
+            let data = try secureEnclaveStore.retrieve(forKey: key, biometric: false, hasPasscodeFallback: false)
+            guard let value = String(data: data, encoding: .utf8) else {
+                throw StoreError.encodingError // Handle encoding error
+            }
+            return value
+        } catch {
+            throw StoreError.keychainError("Failed to retrieve preference: \(error.localizedDescription)")
         }
-        guard let value = String(data: data, encoding: .utf8) else {
-            throw StoreError.encodingError  // Handle encoding error
-        }
-        return value
     }
 
     // MARK: - Put Preference
     func putPreference(key: String, value: String) async throws {
         guard let data = value.data(using: .utf8) else {
-            throw StoreError.encodingError  // Handle invalid string encoding
+            throw StoreError.encodingError // Handle invalid string encoding
         }
-        let success = secureEnclaveStore.save(data: data, forKey: key, biometric: false, hasPasscodeFallback: false)
-        if !success {
-            throw StoreError.keychainError("Failed to save data to Secure Enclave.")
+        do {
+            try secureEnclaveStore.save(data: data, forKey: key, biometric: false, hasPasscodeFallback: false)
+        } catch {
+            throw StoreError.keychainError("Failed to save preference: \(error.localizedDescription)")
         }
     }
 
     // MARK: - Has Preference
     func hasPreference(key: String) async throws -> Bool {
-        secureEnclaveStore.keyExists(forKey: key)
+        return secureEnclaveStore.keyExists(forKey: key)
     }
 
     // MARK: - Remove Preference
     func removePreference(key: String) async throws {
         let success = secureEnclaveStore.delete(forKey: key)
         if !success {
-            throw StoreError.keychainError("Failed to delete item from Secure Enclave.")
+            throw StoreError.keychainError("Failed to delete preference.")
         }
     }
 }

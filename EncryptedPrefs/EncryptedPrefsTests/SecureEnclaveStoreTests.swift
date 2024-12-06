@@ -40,52 +40,68 @@ class SecureEnclaveStoreTests: XCTestCase {
     func testSaveDataSuccessfullyWithoutBiometricOrFallback() {
         mockLAContext.canEvaluatePolicyReturnValue = false  // Simulate no biometric or fallback
 
-        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: false, hasPasscodeFallback: false)
-        XCTAssertTrue(result, "Data should be saved successfully without biometric or fallback.")
-
-        let retrievedData = secureEnclaveStore.retrieve(forKey: testKey, biometric: false, hasPasscodeFallback: false)
-        XCTAssertNotNil(retrievedData, "Retrieved data should not be nil.")
-        XCTAssertEqual(retrievedData, testData, "Retrieved data should match saved data.")
+        do {
+            try secureEnclaveStore.save(data: testData, forKey: testKey, biometric: false, hasPasscodeFallback: false)
+            let retrievedData = try secureEnclaveStore.retrieve(forKey: testKey, biometric: false, hasPasscodeFallback: false)
+            XCTAssertNotNil(retrievedData, "Retrieved data should not be nil.")
+            XCTAssertEqual(retrievedData, testData, "Retrieved data should match saved data.")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
 
     func testSaveDataSuccessfullyWithBiometricAndFallback() {
         mockLAContext.canEvaluatePolicyReturnValue = true  // Simulate successful evaluation
 
-        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: true, hasPasscodeFallback: true)
-        XCTAssertTrue(result, "Data should be saved successfully with biometric and fallback.")
-
-        let retrievedData = secureEnclaveStore.retrieve(forKey: testKey, biometric: true, hasPasscodeFallback: true)
-        XCTAssertNotNil(retrievedData, "Retrieved data should not be nil.")
-        XCTAssertEqual(retrievedData, testData, "Retrieved data should match saved data.")
+        do {
+            try secureEnclaveStore.save(data: testData, forKey: testKey, biometric: true, hasPasscodeFallback: true)
+            let retrievedData = try secureEnclaveStore.retrieve(forKey: testKey, biometric: true, hasPasscodeFallback: true)
+            XCTAssertNotNil(retrievedData, "Retrieved data should not be nil.")
+            XCTAssertEqual(retrievedData, testData, "Retrieved data should match saved data.")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
 
     func testSaveFailsWithoutBiometricAndFallbackEnabled() {
         mockLAContext.canEvaluatePolicyReturnValue = false  // Simulate biometric failure
 
-        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: true, hasPasscodeFallback: true)
-        XCTAssertFalse(result, "Saving should fail when biometric evaluation fails and fallback is enabled but unavailable.")
+        XCTAssertThrowsError(try secureEnclaveStore.save(data: testData, forKey: testKey, biometric: true, hasPasscodeFallback: true)) { error in
+            guard case SecureEnclaveError.biometricNotAvailable = error else {
+                XCTFail("Expected biometricNotAvailable error, but got \(error)")
+                return
+            }
+        }
     }
 
     func testRetrieveNonExistentData() {
-        let retrievedData = secureEnclaveStore.retrieve(forKey: "NonExistentKey", biometric: false, hasPasscodeFallback: false)
-        XCTAssertNil(retrievedData, "Retrieving non-existent data should return nil.")
+        XCTAssertThrowsError(try secureEnclaveStore.retrieve(forKey: "NonExistentKey", biometric: false, hasPasscodeFallback: false)) { error in
+            guard case SecureEnclaveError.dataNotFound = error else {
+                XCTFail("Expected dataNotFound error, but got \(error)")
+                return
+            }
+        }
     }
 
     func testDeleteDataSuccessfully() {
         // First save the data
-        _ = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: false, hasPasscodeFallback: false)
+        do {
+            try secureEnclaveStore.save(data: testData, forKey: testKey, biometric: false, hasPasscodeFallback: false)
+            let deleteResult = secureEnclaveStore.delete(forKey: testKey)
+            XCTAssertTrue(deleteResult, "Data should be deleted successfully.")
 
-        // Now delete it
-        let deleteResult = secureEnclaveStore.delete(forKey: testKey)
-        XCTAssertTrue(deleteResult, "Data should be deleted successfully.")
-
-        // Verify that the data is no longer retrievable
-        let retrievedDataAfterDelete = secureEnclaveStore.retrieve(forKey: testKey, biometric: false, hasPasscodeFallback: false)
-        XCTAssertNil(retrievedDataAfterDelete, "Retrieved data after deletion should be nil.")
+            XCTAssertThrowsError(try secureEnclaveStore.retrieve(forKey: testKey, biometric: false, hasPasscodeFallback: false)) { error in
+                guard case SecureEnclaveError.dataNotFound = error else {
+                    XCTFail("Expected dataNotFound error, but got \(error)")
+                    return
+                }
+            }
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
 
     func testDeleteNonExistentItem() {
-        // Attempt to delete a non-existent item
         let deleteResult = secureEnclaveStore.delete(forKey: "NonExistentKey")
         XCTAssertTrue(deleteResult, "Deleting a non-existent item should return true.")
     }
@@ -93,19 +109,27 @@ class SecureEnclaveStoreTests: XCTestCase {
     func testSaveAndRetrieveWithBiometricOnly() {
         mockLAContext.canEvaluatePolicyReturnValue = true  // Simulate successful biometric authentication
 
-        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: true, hasPasscodeFallback: false)
-        XCTAssertTrue(result, "Data should be saved successfully with biometric authentication only.")
-
-        let retrievedData = secureEnclaveStore.retrieve(forKey: testKey, biometric: true, hasPasscodeFallback: false)
-        XCTAssertNotNil(retrievedData, "Retrieved data should not be nil.")
-        XCTAssertEqual(retrievedData, testData, "Retrieved data should match saved data.")
+        do {
+            try secureEnclaveStore.save(data: testData, forKey: testKey, biometric: true, hasPasscodeFallback: false)
+            let retrievedData = try secureEnclaveStore.retrieve(forKey: testKey, biometric: true, hasPasscodeFallback: false)
+            XCTAssertNotNil(retrievedData, "Retrieved data should not be nil.")
+            XCTAssertEqual(retrievedData, testData, "Retrieved data should match saved data.")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
 
     func testSaveFailsWithBiometricDisabled() {
         mockLAContext.canEvaluatePolicyReturnValue = true  // Simulate policy can be evaluated, but biometric is disabled
 
-        let result = secureEnclaveStore.save(data: testData, forKey: testKey, biometric: false, hasPasscodeFallback: false)
-        XCTAssertTrue(result, "Data should be saved successfully even if biometric is disabled.")
+        do {
+            try secureEnclaveStore.save(data: testData, forKey: testKey, biometric: false, hasPasscodeFallback: false)
+            let retrievedData = try secureEnclaveStore.retrieve(forKey: testKey, biometric: false, hasPasscodeFallback: false)
+            XCTAssertNotNil(retrievedData, "Retrieved data should not be nil.")
+            XCTAssertEqual(retrievedData, testData, "Retrieved data should match saved data.")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
 }
 
